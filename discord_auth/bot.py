@@ -137,12 +137,6 @@ async def auth(ctx, token : str = None):
     )
 
     try:
-        await ctx.bot.change_nickname(author, token_obj.user.eve.full_name)
-        await ctx.bot.update_member_roles(author)
-    except discord.errors.Forbidden:
-        print("No permissions to modify %s." % author.name)
-
-    try:
         old = (
             DiscordUser
             .objects
@@ -163,5 +157,11 @@ async def auth(ctx, token : str = None):
             'id': author.id
         }
     )
+
+    try:
+        await ctx.bot.change_nickname(author, token_obj.user.eve.full_name)
+        await ctx.bot.update_member_roles(author)
+    except discord.errors.Forbidden:
+        print("No permissions to modify %s." % author.name)
 
     token_obj.delete()
