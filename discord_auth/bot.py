@@ -16,7 +16,7 @@ class DiscordBot(commands.Bot):
         self.add_command(auth)
         self.add_command(sync_roles)
         self.add_command(update_roles)
-        # self.loop.create_task(self.purge_loop())
+        self.loop.create_task(self.purge_loop())
 
     async def purge_loop(self):
         await self.wait_until_ready()
