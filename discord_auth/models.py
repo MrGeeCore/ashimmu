@@ -51,3 +51,8 @@ class DiscordRole(models.Model):
     )
 
     name = models.CharField(max_length=128, db_index=True)
+
+
+class AssignableRole(models.Model):
+    name = models.CharField(max_length=64, primary_key=True)
+    role = models.ForeignKey(DiscordRole, models.CASCADE)

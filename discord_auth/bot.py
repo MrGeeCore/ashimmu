@@ -6,7 +6,7 @@ from collections import defaultdict
 from django.contrib.auth.models import User
 from django.conf import settings
 
-from discord_auth.models import DiscordAuthToken, DiscordUser, DiscordRole
+from discord_auth.models import DiscordAuthToken, DiscordUser, DiscordRole, AssignableRole
 
 
 class DiscordBot(commands.Bot):
@@ -16,6 +16,10 @@ class DiscordBot(commands.Bot):
         self.add_command(auth)
         self.add_command(sync_roles)
         self.add_command(update_roles)
+
+        self.add_command(join_group)
+        self.add_command(leave_group)
+
         self.loop.create_task(self.purge_loop())
 
     async def purge_loop(self):
@@ -168,3 +172,31 @@ async def auth(ctx, token : str = None):
         print("No permissions to modify %s." % author.name)
 
     token_obj.delete()
+
+
+@commands.command(pass_context=True)
+async def join_group(ctx, name : str):
+    try:
+        role = AssignableRole.objects.get(name=name)
+    except AssignableRole.DoesNotExist:
+        await ctx.bot.send_message(
+            ctx.message.channel,
+            'Sorry, but you cannot join "%s".' % name
+        )
+        return
+
+    await ctx.bot.add_roles(ctx.message.author, role.role)
+
+
+@commands.command(pass_context=True)
+async def leave_group(ctx, name : str):
+    try:
+        role = AssignableRole.objects.get(name=name)
+    except AssignableRole.DoesNotExist:
+        await ctx.bot.send_message(
+            ctx.message.channel,
+            'Sorry, but you cannot leave "%s".' % name
+        )
+        return
+
+    await ctx.bot.remove_roles(ctx.message.author, role.role)

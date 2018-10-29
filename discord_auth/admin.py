@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from discord_auth.models import DiscordAuthToken, DiscordUser, DiscordRole
+from discord_auth.models import DiscordAuthToken, DiscordUser, DiscordRole, AssignableRole
 
 
 class DiscordAuthTokenAdmin(admin.ModelAdmin):
@@ -21,3 +21,4 @@ class DiscordRoleAdmin(admin.ModelAdmin):
 admin.site.register(DiscordAuthToken, DiscordAuthTokenAdmin)
 admin.site.register(DiscordUser, DiscordUserAdmin)
 admin.site.register(DiscordRole, DiscordRoleAdmin)
+admin.site.register(AssignableRole)
