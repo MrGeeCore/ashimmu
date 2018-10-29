@@ -24,8 +24,11 @@ class DiscordBot(commands.Bot):
         self.server = self.get_server(settings.DISCORD_SERVER_ID)
 
         while not self.is_closed:
-            await self.sync_roles()
-            await self.update_roles()
+            try:
+                await self.sync_roles()
+                await self.update_roles()
+            except:
+                pass
             await asyncio.sleep(60 * 60)
 
     async def update_member_roles(self, member):
