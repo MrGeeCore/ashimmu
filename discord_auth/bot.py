@@ -26,7 +26,7 @@ class DiscordBot(commands.Bot):
         while not self.is_closed:
             await self.sync_roles()
             await self.update_roles()
-            await asyncio.sleep(4 * 60 * 60)
+            await asyncio.sleep(60 * 60)
 
     async def update_member_roles(self, member):
         current_roles = set(member.roles)
